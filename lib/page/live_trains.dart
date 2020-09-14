@@ -8,7 +8,9 @@ class LiveTrainsPage extends StatefulWidget {
 
 class _LiveTrainsPageState extends State<LiveTrainsPage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final TextEditingController _typeAheadController = TextEditingController();
+  final TextEditingController _typeAheadControllerFrom =
+      TextEditingController();
+  final TextEditingController _typeAheadControllerTo = TextEditingController();
   bool departing;
   String _selectedStation;
 
@@ -26,9 +28,9 @@ class _LiveTrainsPageState extends State<LiveTrainsPage> {
         children: <Widget>[
           TypeAheadFormField(
             textFieldConfiguration: TextFieldConfiguration(
-              controller: this._typeAheadController,
+              controller: this._typeAheadControllerFrom,
               decoration: InputDecoration(
-                labelText: 'From',
+                labelText: departing ? 'From' : 'At',
               ),
             ),
             suggestionsCallback: (pattern) {
@@ -43,7 +45,7 @@ class _LiveTrainsPageState extends State<LiveTrainsPage> {
               return suggestionsBox;
             },
             onSuggestionSelected: (suggestion) {
-              this._typeAheadController.text = suggestion;
+              this._typeAheadControllerFrom.text = suggestion;
             },
             validator: (value) {
               if (value.isEmpty) {
@@ -55,9 +57,9 @@ class _LiveTrainsPageState extends State<LiveTrainsPage> {
           ),
           TypeAheadFormField(
             textFieldConfiguration: TextFieldConfiguration(
-              controller: this._typeAheadController,
+              controller: this._typeAheadControllerTo,
               decoration: InputDecoration(
-                labelText: 'To',
+                labelText: departing ? 'To' : 'From',
               ),
             ),
             suggestionsCallback: (pattern) {
@@ -72,7 +74,7 @@ class _LiveTrainsPageState extends State<LiveTrainsPage> {
               return suggestionsBox;
             },
             onSuggestionSelected: (suggestion) {
-              this._typeAheadController.text = suggestion;
+              this._typeAheadControllerTo.text = suggestion;
             },
             validator: (value) {
               if (value.isEmpty) {
