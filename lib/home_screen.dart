@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:national_train_hunter/main.dart';
 import 'package:national_train_hunter/page/favourites_page.dart';
 import 'package:national_train_hunter/page/live_trains.dart';
-import 'package:national_train_hunter/page/my_travel_page.dart';
 import 'package:national_train_hunter/page/planner_page.dart';
 import 'package:national_train_hunter/settings_screen.dart';
 
@@ -16,7 +15,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   final _pageOptions = [
-    MyTravelPage(),
+    // MyTravelPage(),
     LiveTrainsPage(),
     PlannerPage(),
     FavouritesPage(),
@@ -56,10 +55,10 @@ class _HomeScreenState extends State<HomeScreen> {
         key: Key('bottom_navigation_bar'),
         backgroundColor: Theme.of(context).accentColor,
         items: <FloatingNavbarItem>[
-          FloatingNavbarItem(
-            icon: Icons.person,
-            title: 'My Travel',
-          ),
+          // FloatingNavbarItem(
+          //   icon: Icons.person,
+          //   title: 'My Travel',
+          // ),
           FloatingNavbarItem(
             icon: Icons.access_time,
             title: 'Live Trains',
