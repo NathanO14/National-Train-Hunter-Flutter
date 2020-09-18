@@ -158,7 +158,7 @@ class _LiveTrainsPageState extends State<LiveTrainsPage> {
               ),
             if (state is LiveTrainsLoaded)
               Flexible(
-                flex: 2,
+                flex: 3,
                 child: ListView.builder(
                   itemCount: _departures.length,
                   itemBuilder: (BuildContext context, int index) {
