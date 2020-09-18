@@ -2,7 +2,7 @@ import 'package:floating_bottom_navigation_bar/floating_bottom_navigation_bar.da
 import 'package:flutter/material.dart';
 import 'package:national_train_hunter/constants/text_constants.dart';
 import 'package:national_train_hunter/page/favourites_page.dart';
-import 'package:national_train_hunter/page/live_trains.dart';
+import 'package:national_train_hunter/page/live_trains_page.dart';
 import 'package:national_train_hunter/page/planner_page.dart';
 import 'package:national_train_hunter/settings_screen.dart';
 

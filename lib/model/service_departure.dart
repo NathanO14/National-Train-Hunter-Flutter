@@ -12,8 +12,8 @@ class ServiceDeparture {
   String via;
   DateTime scheduledDepartureTime;
   DateTime estimatedDepartureTime;
-  bool isDelayed;
-  bool isCancelled;
+  bool delayed;
+  bool cancelled;
 
   ServiceDeparture({
     this.rsId,
@@ -24,8 +24,8 @@ class ServiceDeparture {
     this.via,
     this.scheduledDepartureTime,
     this.estimatedDepartureTime,
-    this.isDelayed,
-    this.isCancelled,
+    this.delayed,
+    this.cancelled,
   });
 
   factory ServiceDeparture.fromJson(Map<String, dynamic> json) =>
