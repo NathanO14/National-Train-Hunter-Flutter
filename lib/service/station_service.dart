@@ -9,10 +9,10 @@ class StationService {
   final SimpleLogger _logger = SimpleLogger();
   StationAPI _stationAPI;
 
-  static final StationService _vehicleService = StationService._internal();
+  static final StationService _stationService = StationService._internal();
 
   factory StationService() {
-    return _vehicleService;
+    return _stationService;
   }
 
   StationService._internal() {

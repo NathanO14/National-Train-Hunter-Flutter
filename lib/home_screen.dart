@@ -1,6 +1,6 @@
 import 'package:floating_bottom_navigation_bar/floating_bottom_navigation_bar.dart';
 import 'package:flutter/material.dart';
-import 'package:national_train_hunter/main.dart';
+import 'package:national_train_hunter/constants/text_constants.dart';
 import 'package:national_train_hunter/page/favourites_page.dart';
 import 'package:national_train_hunter/page/live_trains.dart';
 import 'package:national_train_hunter/page/planner_page.dart';

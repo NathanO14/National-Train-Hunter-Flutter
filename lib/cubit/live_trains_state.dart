@@ -26,3 +26,19 @@ class LiveTrainsStationsLoaded extends LiveTrainsState {
   @override
   List<Object> get props => [];
 }
+
+class LiveTrainsLoading extends LiveTrainsState {
+  const LiveTrainsLoading();
+
+  @override
+  List<Object> get props => [];
+}
+
+class LiveTrainsLoaded extends LiveTrainsState {
+  final List<ServiceDeparture> departures;
+
+  const LiveTrainsLoaded(this.departures);
+
+  @override
+  List<Object> get props => [];
+}

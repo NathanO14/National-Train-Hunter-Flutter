@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:national_train_hunter/constants/text_constants.dart';
 import 'package:national_train_hunter/cubit/live_trains_cubit.dart';
 import 'package:national_train_hunter/home_screen.dart';
-import 'package:national_train_hunter/station_service.dart';
-
-const kAppName = 'National Rail Hunter';
+import 'package:national_train_hunter/service/service_departure_service.dart';
+import 'package:national_train_hunter/service/station_service.dart';
 
 void main() {
   runApp(MyApp());
@@ -16,7 +16,10 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider<LiveTrainsCubit>(
-          create: (context) => LiveTrainsCubit(StationService()),
+          create: (context) => LiveTrainsCubit(
+            StationService(),
+            ServiceDepartureService(),
+          ),
         ),
       ],
       child: MaterialApp(
