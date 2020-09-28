@@ -1,8 +1,8 @@
 import 'package:dio/dio.dart';
+import 'package:enum_to_string/enum_to_string.dart';
 import 'package:flutter/material.dart';
-import 'package:national_train_hunter/api/params/filter_type.dart';
-import 'package:national_train_hunter/api/params/get_board_request_params.dart';
 import 'package:national_train_hunter/api/service_departure_api.dart';
+import 'package:national_train_hunter/model/params/filter_type.dart';
 import 'package:national_train_hunter/model/service_departure.dart';
 import 'package:simple_logger/simple_logger.dart';
 
@@ -34,11 +34,14 @@ class ServiceDepartureService {
 
     List<ServiceDeparture> departures =
         await _serviceDepartureAPI.getDepartureBoard(
-      GetBoardRequestParams(
-        crs: crs,
-        filterCrs: filterCrs,
-        filterType: departing ? FilterType.TO : FilterType.FROM,
-      ),
+      numRows: 50,
+      crs: crs,
+      filterCrs: filterCrs,
+      time: DateTime.now().toIso8601String(),
+      timeWindow: 60,
+      filterType: departing
+          ? EnumToString.convertToString(FilterType.TO)
+          : EnumToString.convertToString(FilterType.FROM),
     );
 
     _logger.info("Loading complete.");

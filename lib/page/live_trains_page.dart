@@ -5,7 +5,6 @@ import 'package:national_train_hunter/cubit/live_trains_cubit.dart';
 import 'package:national_train_hunter/layout/row/service_departure_row.dart';
 import 'package:national_train_hunter/model/service_departure.dart';
 import 'package:national_train_hunter/model/station.dart';
-import 'package:simple_logger/simple_logger.dart';
 
 class LiveTrainsPage extends StatefulWidget {
   @override
@@ -13,7 +12,6 @@ class LiveTrainsPage extends StatefulWidget {
 }
 
 class _LiveTrainsPageState extends State<LiveTrainsPage> {
-  final SimpleLogger _logger = SimpleLogger();
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final TextEditingController _typeAheadControllerFrom =
       TextEditingController();

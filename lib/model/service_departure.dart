@@ -4,6 +4,7 @@ part 'service_departure.g.dart';
 
 @JsonSerializable(explicitToJson: true)
 class ServiceDeparture {
+  String rid;
   String rsId;
   String serviceID;
   String platform;
@@ -14,8 +15,10 @@ class ServiceDeparture {
   DateTime estimatedDepartureTime;
   bool delayed;
   bool cancelled;
+  int length;
 
   ServiceDeparture({
+    this.rid,
     this.rsId,
     this.serviceID,
     this.platform,
@@ -26,6 +29,7 @@ class ServiceDeparture {
     this.estimatedDepartureTime,
     this.delayed,
     this.cancelled,
+    this.length,
   });
 
   factory ServiceDeparture.fromJson(Map<String, dynamic> json) =>
