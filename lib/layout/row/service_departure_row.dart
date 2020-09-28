@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:national_train_hunter/model/service_departure.dart';
+import 'package:national_train_hunter/service_information_screen.dart';
 
 class ServiceDepartureRow extends StatelessWidget {
   final DateFormat _dateFormat = new DateFormat().add_Hm();
@@ -12,7 +13,22 @@ class ServiceDepartureRow extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListTile(
       enabled: !_serviceDeparture.cancelled,
-      // onTap: () {},
+      onTap: () {
+        // Navigator.pushNamed(
+        //   context,
+        //   '/service-information',
+        //   arguments: {
+        //     'rid': _serviceDeparture.rid,
+        //   },
+        // );
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) =>
+                ServiceInformationScreen(_serviceDeparture.rid),
+          ),
+        );
+      },
       contentPadding: EdgeInsets.symmetric(
         horizontal: 20.0,
         vertical: 5.0,

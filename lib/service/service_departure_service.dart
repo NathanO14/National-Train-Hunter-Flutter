@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:national_train_hunter/api/service_departure_api.dart';
 import 'package:national_train_hunter/model/params/filter_type.dart';
 import 'package:national_train_hunter/model/service_departure.dart';
+import 'package:national_train_hunter/model/service_information.dart';
 import 'package:simple_logger/simple_logger.dart';
 
 class ServiceDepartureService {
@@ -46,5 +47,15 @@ class ServiceDepartureService {
 
     _logger.info("Loading complete.");
     return departures;
+  }
+
+  Future<ServiceInformation> getServiceDetails(String rid) async {
+    _logger.info("Loading service information for: $rid");
+
+    ServiceInformation serviceInformation =
+        await _serviceDepartureAPI.getServiceDetails(rid: rid);
+
+    _logger.info("Loading complete.");
+    return serviceInformation;
   }
 }

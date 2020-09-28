@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:national_train_hunter/constants/text_constants.dart';
 import 'package:national_train_hunter/model/service_departure.dart';
+import 'package:national_train_hunter/model/service_information.dart';
 import 'package:retrofit/retrofit.dart';
 
 part 'service_departure_api.g.dart';
@@ -17,5 +18,10 @@ abstract class ServiceDepartureAPI {
     @Query("time") String time,
     @Query("timeWindow") int timeWindow,
     @Query("filterType") String filterType,
+  });
+
+  @GET("/v1/service/details")
+  Future<ServiceInformation> getServiceDetails({
+    @Query("rid") String rid,
   });
 }
