@@ -2,7 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:enum_to_string/enum_to_string.dart';
 import 'package:flutter/material.dart';
 import 'package:national_train_hunter/api/service_departure_api.dart';
-import 'package:national_train_hunter/model/params/filter_type.dart';
+import 'package:national_train_hunter/model/enums/filter_type.dart';
 import 'package:national_train_hunter/model/service_departure.dart';
 import 'package:national_train_hunter/model/service_information.dart';
 import 'package:simple_logger/simple_logger.dart';

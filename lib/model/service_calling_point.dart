@@ -1,4 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
+import 'package:national_train_hunter/model/enums/forecast_type.dart';
 
 part 'service_calling_point.g.dart';
 
@@ -10,9 +11,11 @@ class ServiceCallingPoint {
   DateTime scheduledArrivalTime;
   DateTime actualArrivalTime;
   DateTime estimatedArrivalTime;
+  ForecastType arrivalType;
   DateTime scheduledDepartureTime;
   DateTime actualDepartureTime;
   DateTime estimatedDepartureTime;
+  ForecastType departureType;
   bool cancelled;
 
   ServiceCallingPoint({

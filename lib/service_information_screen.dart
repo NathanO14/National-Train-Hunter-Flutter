@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:national_train_hunter/cubit/service_information_cubit.dart';
-import 'package:national_train_hunter/model/service_calling_point.dart';
+import 'package:national_train_hunter/layout/row/service_calling_point_row.dart';
 import 'package:national_train_hunter/model/service_information.dart';
 
 class ServiceInformationScreen extends StatefulWidget {
@@ -47,10 +47,8 @@ class _ServiceInformationScreenState extends State<ServiceInformationScreen> {
                         ? _serviceInformation.callingPoints.length
                         : 0,
                     itemBuilder: (BuildContext context, int index) {
-                      ServiceCallingPoint callingPoint =
-                          _serviceInformation.callingPoints[index];
-                      return Text(
-                          '${callingPoint.scheduledDepartureTime} - ${callingPoint.stationName}');
+                      return ServiceCallingPointRow(
+                          _serviceInformation.callingPoints[index]);
                     },
                   ),
           );
