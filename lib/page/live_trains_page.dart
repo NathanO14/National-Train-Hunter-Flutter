@@ -39,141 +39,138 @@ class _LiveTrainsPageState extends State<LiveTrainsPage> {
       },
       builder: (context, state) {
         return Column(
-          children: [
-            Flexible(
-              flex: 1,
-              child: Form(
-                key: _formKey,
-                child: Column(
-                  children: <Widget>[
-                    Expanded(
-                      child: Padding(
-                        padding: const EdgeInsets.all(16.0),
-                        child: TypeAheadFormField<Station>(
-                          textFieldConfiguration: TextFieldConfiguration(
-                            controller: this._typeAheadControllerFrom,
-                            decoration: InputDecoration(
-                              labelText: _departing ? 'From' : 'At',
-                            ),
-                          ),
-                          suggestionsCallback: (String pattern) {
-                            return BlocProvider.of<LiveTrainsCubit>(context)
-                                .getStationBySearchTerm(pattern);
-                          },
-                          autovalidate: true,
-                          itemBuilder:
-                              (BuildContext context, Station suggestion) {
-                            return ListTile(
-                              title: Text(
-                                  '${suggestion.stationName} (${suggestion.stationCode})'),
-                            );
-                          },
-                          transitionBuilder:
-                              (context, suggestionsBox, controller) {
-                            return suggestionsBox;
-                          },
-                          onSuggestionSelected: (Station suggestion) {
-                            this._typeAheadControllerFrom.text =
-                                suggestion.stationName;
-                            _selectedFromStation = suggestion;
-                          },
-                          validator: (String value) {
-                            if (value.isEmpty) {
-                              _selectedFromStation = null;
-                            }
-                            return null;
-                          },
-                        ),
-                      ),
-                    ),
-                    Expanded(
-                      child: Padding(
-                        padding: const EdgeInsets.all(16.0),
-                        child: TypeAheadFormField<Station>(
-                          textFieldConfiguration: TextFieldConfiguration(
-                            controller: this._typeAheadControllerTo,
-                            decoration: InputDecoration(
-                              labelText: _departing ? 'To' : 'From',
-                            ),
-                          ),
-                          suggestionsCallback: (String pattern) {
-                            return BlocProvider.of<LiveTrainsCubit>(context)
-                                .getStationBySearchTerm(pattern);
-                          },
-                          itemBuilder:
-                              (BuildContext context, Station suggestion) {
-                            return ListTile(
-                              title: Text(
-                                  '${suggestion.stationName} (${suggestion.stationCode})'),
-                            );
-                          },
-                          transitionBuilder:
-                              (context, suggestionsBox, controller) {
-                            return suggestionsBox;
-                          },
-                          onSuggestionSelected: (suggestion) {
-                            this._typeAheadControllerTo.text =
-                                suggestion.stationName;
-                            _selectedToStation = suggestion;
-                          },
-                          validator: (value) {
-                            if (value.isEmpty) _selectedToStation = null;
-                            return null;
-                          },
-                        ),
-                      ),
-                    ),
-                    Expanded(
-                      child: SwitchListTile(
-                        title: Text(
-                          _departing ? 'Departing' : 'Arriving',
-                        ),
-                        secondary: const Icon(Icons.import_export),
-                        value: _departing,
-                        onChanged: (bool value) {
-                          setState(() {
-                            _departing = value;
-                          });
-                        },
-                      ),
-                    ),
-                    Flexible(
-                      child: RaisedButton(
-                        onPressed: () {
-                          if (_formKey.currentState.validate()) {
-                            BlocProvider.of<LiveTrainsCubit>(context)
-                                .getDepartures(
-                                    _selectedFromStation?.stationCode,
-                                    _selectedToStation?.stationCode,
-                                    _departing);
-                          }
-                        },
-                        child: Text('Go'),
-                      ),
-                    ),
-                  ],
+          children: [_form(), _card(state)],
+        );
+      },
+    );
+  }
+
+  Widget _form() {
+    return Card(
+      margin: EdgeInsets.all(8.0),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(8.0),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Form(
+          key: _formKey,
+          child: Column(
+            children: <Widget>[
+              TypeAheadFormField<Station>(
+                textFieldConfiguration: TextFieldConfiguration(
+                  controller: this._typeAheadControllerFrom,
+                  decoration: InputDecoration(
+                    labelText: _departing ? 'From' : 'At',
+                  ),
                 ),
-              ),
-            ),
-            // if (state is LiveTrainsLoading)
-            //   Flexible(
-            //     flex: 3,
-            //     child: Center(
-            //       child: CircularProgressIndicator(),
-            //     ),
-            //   ),
-            // if (state is LiveTrainsLoaded)
-            Flexible(
-              flex: 2,
-              child: ListView.builder(
-                itemCount: _departures.length,
-                itemBuilder: (BuildContext context, int index) {
-                  return ServiceDepartureRow(_departures[index]);
+                suggestionsCallback: (String pattern) {
+                  return BlocProvider.of<LiveTrainsCubit>(context)
+                      .getStationBySearchTerm(pattern);
+                },
+                autovalidate: true,
+                itemBuilder: (BuildContext context, Station suggestion) {
+                  return ListTile(
+                    title: Text(
+                        '${suggestion.stationName} (${suggestion.stationCode})'),
+                  );
+                },
+                transitionBuilder: (context, suggestionsBox, controller) {
+                  return suggestionsBox;
+                },
+                onSuggestionSelected: (Station suggestion) {
+                  this._typeAheadControllerFrom.text = suggestion.stationName;
+                  _selectedFromStation = suggestion;
+                },
+                validator: (String value) {
+                  if (value.isEmpty) {
+                    _selectedFromStation = null;
+                  }
+                  return null;
                 },
               ),
-            ),
-          ],
-        );
+              TypeAheadFormField<Station>(
+                textFieldConfiguration: TextFieldConfiguration(
+                  controller: this._typeAheadControllerTo,
+                  decoration: InputDecoration(
+                    labelText: _departing ? 'To' : 'From',
+                  ),
+                ),
+                suggestionsCallback: (String pattern) {
+                  return BlocProvider.of<LiveTrainsCubit>(context)
+                      .getStationBySearchTerm(pattern);
+                },
+                itemBuilder: (BuildContext context, Station suggestion) {
+                  return ListTile(
+                    title: Text(
+                        '${suggestion.stationName} (${suggestion.stationCode})'),
+                  );
+                },
+                transitionBuilder: (context, suggestionsBox, controller) {
+                  return suggestionsBox;
+                },
+                onSuggestionSelected: (suggestion) {
+                  this._typeAheadControllerTo.text = suggestion.stationName;
+                  _selectedToStation = suggestion;
+                },
+                validator: (value) {
+                  if (value.isEmpty) _selectedToStation = null;
+                  return null;
+                },
+              ),
+              SwitchListTile(
+                title: Text(
+                  _departing ? 'Departing' : 'Arriving',
+                ),
+                secondary: const Icon(Icons.import_export),
+                value: _departing,
+                onChanged: (bool value) {
+                  setState(() {
+                    _departing = value;
+                  });
+                },
+              ),
+              RaisedButton(
+                onPressed: () {
+                  if (_formKey.currentState.validate()) {
+                    BlocProvider.of<LiveTrainsCubit>(context).getDepartures(
+                        _selectedFromStation?.stationCode,
+                        _selectedToStation?.stationCode,
+                        _departing);
+                  }
+                },
+                child: Text('Go'),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _card(LiveTrainsState state) {
+    if (state is LiveTrainsLoading) {
+      return CircularProgressIndicator();
+    } else if (state is LiveTrainsLoaded) {
+      return Expanded(
+        child: Card(
+          margin: EdgeInsets.all(8.0),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(8.0),
+          ),
+          child: _list(state),
+        ),
+      );
+    } else {
+      return Spacer();
+    }
+  }
+
+  Widget _list(LiveTrainsState state) {
+    return ListView.builder(
+      itemCount: _departures.length,
+      itemBuilder: (BuildContext context, int index) {
+        return ServiceDepartureRow(_departures[index]);
       },
     );
   }
