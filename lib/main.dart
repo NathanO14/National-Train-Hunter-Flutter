@@ -34,10 +34,22 @@ class MyApp extends StatelessWidget {
           theme: ThemeData(
             primarySwatch: Colors.blueGrey,
             visualDensity: VisualDensity.adaptivePlatformDensity,
+            cardTheme: CardTheme(
+              margin: EdgeInsets.all(8.0),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8.0),
+              ),
+            ),
           ),
           darkTheme: ThemeData.dark().copyWith(
             accentColor: Colors.blueGrey,
             visualDensity: VisualDensity.adaptivePlatformDensity,
+            cardTheme: CardTheme(
+              margin: EdgeInsets.all(8.0),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(8.0),
+              ),
+            ),
           ),
           initialRoute: '/',
           routes: {

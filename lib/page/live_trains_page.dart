@@ -47,10 +47,6 @@ class _LiveTrainsPageState extends State<LiveTrainsPage> {
 
   Widget _form() {
     return Card(
-      margin: EdgeInsets.all(8.0),
-      shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(8.0),
-      ),
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Form(
@@ -154,10 +150,6 @@ class _LiveTrainsPageState extends State<LiveTrainsPage> {
     } else if (state is LiveTrainsLoaded) {
       return Expanded(
         child: Card(
-          margin: EdgeInsets.all(8.0),
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(8.0),
-          ),
           child: _list(state),
         ),
       );

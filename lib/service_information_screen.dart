@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:national_train_hunter/cubit/service_information_cubit.dart';
 import 'package:national_train_hunter/layout/row/service_calling_point_row.dart';
@@ -15,13 +16,18 @@ class ServiceInformationScreen extends StatefulWidget {
 }
 
 class _ServiceInformationScreenState extends State<ServiceInformationScreen> {
+  final GlobalKey<RefreshIndicatorState> _refreshIndicatorKey =
+      GlobalKey<RefreshIndicatorState>();
+
   ServiceInformation _serviceInformation;
 
   @override
   void initState() {
     super.initState();
-    BlocProvider.of<ServiceInformationCubit>(context)
-        .getServiceDetails(widget._rid);
+
+    SchedulerBinding.instance.addPostFrameCallback((_) {
+      _refreshIndicatorKey.currentState?.show();
+    });
   }
 
   @override
@@ -39,21 +45,42 @@ class _ServiceInformationScreenState extends State<ServiceInformationScreen> {
           }
         },
         builder: (context, state) {
-          return Container(
-            child: (state is ServiceInformationLoading)
-                ? CircularProgressIndicator()
-                : ListView.builder(
-                    itemCount: _serviceInformation != null
-                        ? _serviceInformation.callingPoints.length
-                        : 0,
-                    itemBuilder: (BuildContext context, int index) {
-                      return ServiceCallingPointRow(
-                          _serviceInformation.callingPoints[index]);
-                    },
-                  ),
+          return Column(
+            children: [
+              _serviceCallingPointCard(state),
+            ],
           );
         },
       ),
     );
+  }
+
+  Widget _serviceCallingPointCard(ServiceInformationState state) {
+    return Expanded(
+      child: Card(
+        child: _serviceCallingPointListView(),
+      ),
+    );
+  }
+
+  Widget _serviceCallingPointListView() {
+    return RefreshIndicator(
+      key: _refreshIndicatorKey,
+      onRefresh: _loadResults,
+      child: ListView.builder(
+        itemCount: _serviceInformation != null
+            ? _serviceInformation.callingPoints.length
+            : 0,
+        itemBuilder: (BuildContext context, int index) {
+          return ServiceCallingPointRow(
+              _serviceInformation.callingPoints[index]);
+        },
+      ),
+    );
+  }
+
+  Future<void> _loadResults() async {
+    await BlocProvider.of<ServiceInformationCubit>(context)
+        .getServiceDetails(widget._rid);
   }
 }
