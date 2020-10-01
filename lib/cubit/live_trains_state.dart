@@ -36,8 +36,9 @@ class LiveTrainsLoading extends LiveTrainsState {
 
 class LiveTrainsLoaded extends LiveTrainsState {
   final List<ServiceDeparture> departures;
+  final List<ServiceMessage> messages;
 
-  const LiveTrainsLoaded(this.departures);
+  const LiveTrainsLoaded(this.departures, this.messages);
 
   @override
   List<Object> get props => [];

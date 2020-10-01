@@ -1,6 +1,8 @@
 import 'package:bloc/bloc.dart';
 import 'package:equatable/equatable.dart';
 import 'package:national_train_hunter/model/service_departure.dart';
+import 'package:national_train_hunter/model/service_departure_result.dart';
+import 'package:national_train_hunter/model/service_message.dart';
 import 'package:national_train_hunter/model/station.dart';
 import 'package:national_train_hunter/service/service_departure_service.dart';
 import 'package:national_train_hunter/service/station_service.dart';
@@ -31,9 +33,9 @@ class LiveTrainsCubit extends Cubit<LiveTrainsState> {
       String crs, String filterCrs, bool departing) async {
     emit(LiveTrainsLoading());
 
-    final List<ServiceDeparture> results = await _serviceDepartureService
+    final ServiceDepartureResult result = await _serviceDepartureService
         .getDepartureBoard(crs, filterCrs, departing);
 
-    emit(LiveTrainsLoaded(results));
+    emit(LiveTrainsLoaded(result.serviceDepartures, result.serviceMessages));
   }
 }

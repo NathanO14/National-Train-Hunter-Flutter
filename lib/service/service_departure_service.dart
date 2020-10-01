@@ -3,7 +3,7 @@ import 'package:enum_to_string/enum_to_string.dart';
 import 'package:flutter/material.dart';
 import 'package:national_train_hunter/api/service_departure_api.dart';
 import 'package:national_train_hunter/model/enums/filter_type.dart';
-import 'package:national_train_hunter/model/service_departure.dart';
+import 'package:national_train_hunter/model/service_departure_result.dart';
 import 'package:national_train_hunter/model/service_information.dart';
 import 'package:simple_logger/simple_logger.dart';
 
@@ -28,12 +28,12 @@ class ServiceDepartureService {
     _serviceDepartureAPI = ServiceDepartureAPI(_dio, baseUrl: baseUrl);
   }
 
-  Future<List<ServiceDeparture>> getDepartureBoard(
+  Future<ServiceDepartureResult> getDepartureBoard(
       String crs, String filterCrs, bool departing) async {
     _logger.info(
         "Loading departures between $crs & $filterCrs. Departing: $departing");
 
-    List<ServiceDeparture> departures =
+    ServiceDepartureResult departureResult =
         await _serviceDepartureAPI.getDepartureBoard(
       numRows: 50,
       crs: crs,
@@ -46,7 +46,7 @@ class ServiceDepartureService {
     );
 
     _logger.info("Loading complete.");
-    return departures;
+    return departureResult;
   }
 
   Future<ServiceInformation> getServiceDetails(String rid) async {
