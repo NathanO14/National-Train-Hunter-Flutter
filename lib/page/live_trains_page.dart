@@ -3,7 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_typeahead/flutter_typeahead.dart';
 import 'package:national_train_hunter/cubit/live_trains_cubit.dart';
 import 'package:national_train_hunter/layout/row/service_departure_row.dart';
+import 'package:national_train_hunter/layout/row/service_message_row.dart';
 import 'package:national_train_hunter/model/service_departure.dart';
+import 'package:national_train_hunter/model/service_message.dart';
 import 'package:national_train_hunter/model/station.dart';
 
 class LiveTrainsPage extends StatefulWidget {
@@ -18,6 +20,7 @@ class _LiveTrainsPageState extends State<LiveTrainsPage> {
   final TextEditingController _typeAheadControllerTo = TextEditingController();
   bool _departing;
   List<ServiceDeparture> _departures = List();
+  List<ServiceMessage> _messages = List();
   Station _selectedFromStation;
   Station _selectedToStation;
 
@@ -29,19 +32,35 @@ class _LiveTrainsPageState extends State<LiveTrainsPage> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<LiveTrainsCubit, LiveTrainsState>(
-      listener: (context, state) {
-        if (state is LiveTrainsLoaded) {
-          setState(() {
-            _departures = state.departures;
+    return SafeArea(
+      child: BlocConsumer<LiveTrainsCubit, LiveTrainsState>(
+        listener: (context, state) {
+          if (state is LiveTrainsLoaded) {
+            setState(() {
+              _departures = state.departures;
+              _messages = state.messages;
+            });
+          }
+        },
+        builder: (context, state) {
+          return LayoutBuilder(builder: (context, constraint) {
+            return SingleChildScrollView(
+              child: ConstrainedBox(
+                constraints: BoxConstraints(minHeight: constraint.maxHeight),
+                child: IntrinsicHeight(
+                  child: Column(
+                    children: [
+                      _form(),
+                      _serviceMessagesCard(state),
+                      _liveTrainsCard(state),
+                    ],
+                  ),
+                ),
+              ),
+            );
           });
-        }
-      },
-      builder: (context, state) {
-        return Column(
-          children: [_form(), _card(state)],
-        );
-      },
+        },
+      ),
     );
   }
 
@@ -144,14 +163,10 @@ class _LiveTrainsPageState extends State<LiveTrainsPage> {
     );
   }
 
-  Widget _card(LiveTrainsState state) {
-    if (state is LiveTrainsLoading) {
-      return CircularProgressIndicator();
-    } else if (state is LiveTrainsLoaded) {
-      return Expanded(
-        child: Card(
-          child: _list(state),
-        ),
+  Widget _liveTrainsCard(LiveTrainsState state) {
+    if (state is LiveTrainsLoaded) {
+      return Card(
+        child: _list(state),
       );
     } else {
       return Spacer();
@@ -159,11 +174,34 @@ class _LiveTrainsPageState extends State<LiveTrainsPage> {
   }
 
   Widget _list(LiveTrainsState state) {
-    return ListView.builder(
-      itemCount: _departures.length,
-      itemBuilder: (BuildContext context, int index) {
-        return ServiceDepartureRow(_departures[index]);
-      },
+    return Column(
+      children: [
+        for (ServiceDeparture departure in _departures)
+          ServiceDepartureRow(departure),
+      ],
+    );
+  }
+
+  Widget _serviceMessagesCard(LiveTrainsState state) {
+    if (state is LiveTrainsLoading) {
+      return CircularProgressIndicator();
+    } else if (state is LiveTrainsLoaded && _messages.isNotEmpty) {
+      return _serviceMessages(state);
+    } else {
+      return Spacer();
+    }
+  }
+
+  Widget _serviceMessages(LiveTrainsLoaded state) {
+    return Expanded(
+      child: ExpansionTile(
+        initiallyExpanded: true,
+        title: Text('Messages'),
+        children: [
+          for (ServiceMessage serviceMessage in _messages)
+            ServiceMessageRow(serviceMessage),
+        ],
+      ),
     );
   }
 }
