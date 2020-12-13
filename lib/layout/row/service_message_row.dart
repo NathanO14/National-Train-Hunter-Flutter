@@ -11,6 +11,7 @@ class ServiceMessageRow extends StatelessWidget {
   Widget build(BuildContext context) {
     return ListTile(
       onTap: () {},
+      dense: true,
       contentPadding: EdgeInsets.symmetric(
         horizontal: 20.0,
         vertical: 5.0,

@@ -26,6 +26,7 @@ dependencies:
   html: ^0.14.0+4
   shared_preferences: ^0.5.12+4
   package_info: ^0.4.3
+  animations: ^1.1.2
 
 dev_dependencies:
   flutter_test:

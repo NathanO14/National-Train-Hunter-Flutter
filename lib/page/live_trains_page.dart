@@ -32,18 +32,18 @@ class _LiveTrainsPageState extends State<LiveTrainsPage> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: BlocConsumer<LiveTrainsCubit, LiveTrainsState>(
-        listener: (context, state) {
-          if (state is LiveTrainsLoaded) {
-            setState(() {
-              _departures = state.departures;
-              _messages = state.messages;
-            });
-          }
-        },
-        builder: (context, state) {
-          return LayoutBuilder(builder: (context, constraint) {
+    return BlocConsumer<LiveTrainsCubit, LiveTrainsState>(
+      listener: (context, state) {
+        if (state is LiveTrainsLoaded) {
+          setState(() {
+            _departures = state.departures;
+            _messages = state.messages;
+          });
+        }
+      },
+      builder: (context, state) {
+        return LayoutBuilder(
+          builder: (context, constraint) {
             return SingleChildScrollView(
               child: ConstrainedBox(
                 constraints: BoxConstraints(minHeight: constraint.maxHeight),
@@ -52,31 +52,38 @@ class _LiveTrainsPageState extends State<LiveTrainsPage> {
                     children: [
                       _form(),
                       _serviceMessagesCard(state),
-                      _liveTrainsCard(state),
+                      _lineTrainsList(state),
                     ],
                   ),
                 ),
               ),
             );
-          });
-        },
-      ),
+          },
+        );
+      },
     );
   }
 
   Widget _form() {
     return Card(
       child: Padding(
-        padding: const EdgeInsets.all(8.0),
+        padding: const EdgeInsets.symmetric(horizontal: 8.0),
         child: Form(
           key: _formKey,
           child: Column(
             children: <Widget>[
               TypeAheadFormField<Station>(
                 textFieldConfiguration: TextFieldConfiguration(
-                  controller: this._typeAheadControllerFrom,
+                  controller: _typeAheadControllerFrom,
                   decoration: InputDecoration(
                     labelText: _departing ? 'From' : 'At',
+                    isDense: true,
+                    suffixIcon: IconButton(
+                      icon: Icon(Icons.clear),
+                      onPressed: () {
+                        _typeAheadControllerFrom.clear();
+                      },
+                    ),
                   ),
                 ),
                 suggestionsCallback: (String pattern) {
@@ -94,7 +101,7 @@ class _LiveTrainsPageState extends State<LiveTrainsPage> {
                   return suggestionsBox;
                 },
                 onSuggestionSelected: (Station suggestion) {
-                  this._typeAheadControllerFrom.text = suggestion.stationName;
+                  _typeAheadControllerFrom.text = suggestion.stationName;
                   _selectedFromStation = suggestion;
                 },
                 validator: (String value) {
@@ -109,6 +116,13 @@ class _LiveTrainsPageState extends State<LiveTrainsPage> {
                   controller: this._typeAheadControllerTo,
                   decoration: InputDecoration(
                     labelText: _departing ? 'To' : 'From',
+                    isDense: true,
+                    suffixIcon: IconButton(
+                      icon: Icon(Icons.clear),
+                      onPressed: () {
+                        _typeAheadControllerTo.clear();
+                      },
+                    ),
                   ),
                 ),
                 suggestionsCallback: (String pattern) {
@@ -125,7 +139,7 @@ class _LiveTrainsPageState extends State<LiveTrainsPage> {
                   return suggestionsBox;
                 },
                 onSuggestionSelected: (suggestion) {
-                  this._typeAheadControllerTo.text = suggestion.stationName;
+                  _typeAheadControllerTo.text = suggestion.stationName;
                   _selectedToStation = suggestion;
                 },
                 validator: (value) {
@@ -163,45 +177,37 @@ class _LiveTrainsPageState extends State<LiveTrainsPage> {
     );
   }
 
-  Widget _liveTrainsCard(LiveTrainsState state) {
-    if (state is LiveTrainsLoaded) {
-      return Card(
-        child: _list(state),
-      );
-    } else {
-      return Spacer();
-    }
-  }
-
-  Widget _list(LiveTrainsState state) {
-    return Column(
-      children: [
-        for (ServiceDeparture departure in _departures)
-          ServiceDepartureRow(departure),
-      ],
+  Widget _lineTrainsList(LiveTrainsState state) {
+    return Expanded(
+      child: SizedBox(
+        height: 0.0,
+        child: ListView.builder(
+          itemCount: _departures.length,
+          itemBuilder: (context, index) =>
+              ServiceDepartureRow(_departures[index]),
+        ),
+      ),
     );
   }
 
   Widget _serviceMessagesCard(LiveTrainsState state) {
     if (state is LiveTrainsLoading) {
       return CircularProgressIndicator();
-    } else if (state is LiveTrainsLoaded && _messages.isNotEmpty) {
-      return _serviceMessages(state);
+    } else if (_messages.isNotEmpty) {
+      return _serviceMessages();
     } else {
       return Spacer();
     }
   }
 
-  Widget _serviceMessages(LiveTrainsLoaded state) {
-    return Expanded(
-      child: ExpansionTile(
-        initiallyExpanded: true,
-        title: Text('Messages'),
-        children: [
-          for (ServiceMessage serviceMessage in _messages)
-            ServiceMessageRow(serviceMessage),
-        ],
-      ),
+  Widget _serviceMessages() {
+    return ExpansionTile(
+      initiallyExpanded: false,
+      title: Text('Messages'),
+      children: [
+        for (ServiceMessage serviceMessage in _messages)
+          ServiceMessageRow(serviceMessage),
+      ],
     );
   }
 }

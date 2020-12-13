@@ -63,36 +63,6 @@ class MyAppState extends State<MyApp> {
               });
         },
       ),
-      // child: MaterialApp(
-      //     title: kAppName,
-      //     theme: _getTheme(context, state),
-      //
-      //     // theme: ThemeData(
-      //     //   primarySwatch: Colors.blueGrey,
-      //     //   visualDensity: VisualDensity.adaptivePlatformDensity,
-      //     //   cardTheme: CardTheme(
-      //     //     margin: EdgeInsets.all(8.0),
-      //     //     shape: RoundedRectangleBorder(
-      //     //       borderRadius: BorderRadius.circular(8.0),
-      //     //     ),
-      //     //   ),
-      //     // ),
-      //     // darkTheme: ThemeData.dark().copyWith(
-      //     //   accentColor: Colors.blueGrey,
-      //     //   visualDensity: VisualDensity.adaptivePlatformDensity,
-      //     //   cardTheme: CardTheme(
-      //     //     margin: EdgeInsets.all(8.0),
-      //     //     shape: RoundedRectangleBorder(
-      //     //       borderRadius: BorderRadius.circular(8.0),
-      //     //     ),
-      //     //   ),
-      //     // ),
-      //     initialRoute: '/',
-      //     routes: {
-      //       '/': (context) => HomeScreen(),
-      //       // '/service-information': (context) => ServiceInformationScreen(),
-      //       '/settings': (context) => SettingsScreen(),
-      //     }),
     );
   }
 
