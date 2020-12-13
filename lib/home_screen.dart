@@ -28,11 +28,11 @@ Map<String, LayoutConfig> homeLayoutConfig = {
   'mobile': LayoutConfig(
     pageOptions: [
       NavigatorPage(
-        navigatorKey: _navigatorKeys[1],
+        navigatorKey: _navigatorKeys[0],
         child: PlannerPage(),
       ),
       NavigatorPage(
-        navigatorKey: _navigatorKeys[0],
+        navigatorKey: _navigatorKeys[1],
         child: LiveTrainsPage(),
       ),
       NavigatorPage(
@@ -93,27 +93,8 @@ class _HomeScreenState extends State<HomeScreen> {
           padding: const EdgeInsets.only(bottom: 5, top: 5),
           items: _layoutConfig.floatingNavbarItems,
           currentIndex: _selectedPage,
-          onTap: (int index) {
-            setState(() {
-              _selectedPage = index;
-            });
-            return index;
-          },
+          onTap: navigatorOnTap,
         ),
-      ),
-    );
-  }
-
-  Widget getIndexedStack() {
-    return WillPopScope(
-      onWillPop: () async {
-        return !await Navigator.maybePop(
-          _navigatorKeys[_selectedPage].currentState.context,
-        );
-      },
-      child: IndexedStack(
-        index: _selectedPage,
-        children: _pageOptions,
       ),
     );
   }
@@ -128,6 +109,20 @@ class _HomeScreenState extends State<HomeScreen> {
     }
 
     return index;
+  }
+
+  Widget getIndexedStack() {
+    return WillPopScope(
+      onWillPop: () async {
+        return !await Navigator.maybePop(
+          _navigatorKeys[_selectedPage].currentState.context,
+        );
+      },
+      child: IndexedStack(
+        index: _selectedPage,
+        children: _pageOptions,
+      ),
+    );
   }
 
   void _setUpConfig() {

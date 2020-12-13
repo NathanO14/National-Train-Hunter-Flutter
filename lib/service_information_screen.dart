@@ -45,20 +45,8 @@ class _ServiceInformationScreenState extends State<ServiceInformationScreen> {
           }
         },
         builder: (context, state) {
-          return Column(
-            children: [
-              _serviceCallingPointCard(state),
-            ],
-          );
+          return _serviceCallingPointListView();
         },
-      ),
-    );
-  }
-
-  Widget _serviceCallingPointCard(ServiceInformationState state) {
-    return Expanded(
-      child: Card(
-        child: _serviceCallingPointListView(),
       ),
     );
   }
