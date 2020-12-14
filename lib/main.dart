@@ -122,6 +122,11 @@ class MyAppState extends State<MyApp> {
           color: Colors.black,
         ),
       ),
+      buttonTheme: _buttonThemeData(),
+      cardColor: kCanvasColor,
+      // cardTheme: CardTheme(
+      //   color: Colors.red,
+      // ),
     );
   }
 
@@ -179,6 +184,15 @@ class MyAppState extends State<MyApp> {
           color: Colors.white,
         ),
       ),
+      buttonTheme: _buttonThemeData(),
+      cardColor: kDarkCanvasColor,
+    );
+  }
+
+  ButtonThemeData _buttonThemeData() {
+    return ButtonThemeData(
+      buttonColor: kAccentColour,
+      textTheme: ButtonTextTheme.normal,
     );
   }
 }

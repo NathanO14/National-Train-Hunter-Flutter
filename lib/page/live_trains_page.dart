@@ -147,19 +147,43 @@ class _LiveTrainsPageState extends State<LiveTrainsPage> {
                   return null;
                 },
               ),
-              SwitchListTile(
-                title: Text(
-                  _departing ? 'Departing' : 'Arriving',
-                ),
-                secondary: const Icon(Icons.import_export),
-                value: _departing,
-                onChanged: (bool value) {
-                  setState(() {
-                    _departing = value;
-                  });
-                },
+              Row(
+                children: [
+                  Flexible(
+                    child: SwitchListTile(
+                      dense: true,
+                      title: Text(
+                        _departing ? 'Departing' : 'Arriving',
+                      ),
+                      secondary: const Icon(Icons.import_export),
+                      value: _departing,
+                      onChanged: (bool value) {
+                        setState(() {
+                          _departing = value;
+                        });
+                      },
+                    ),
+                  ),
+                  FlatButton.icon(
+                    icon: Icon(Icons.swap_calls_rounded),
+                    label: Text('Swap'),
+                    onPressed: () {
+                      Station tempStation = _selectedFromStation;
+                      _selectedFromStation = _selectedToStation;
+                      _selectedToStation = tempStation;
+
+                      setState(() {
+                        _typeAheadControllerFrom.text =
+                            _selectedFromStation?.stationName ?? '';
+                        _typeAheadControllerTo.text =
+                            _selectedToStation?.stationName ?? '';
+                      });
+                    },
+                  ),
+                ],
               ),
               RaisedButton(
+                textColor: Colors.white,
                 onPressed: () {
                   if (_formKey.currentState.validate()) {
                     BlocProvider.of<LiveTrainsCubit>(context).getDepartures(
@@ -196,7 +220,7 @@ class _LiveTrainsPageState extends State<LiveTrainsPage> {
     } else if (_messages.isNotEmpty) {
       return _serviceMessages();
     } else {
-      return Spacer();
+      return Container(height: 0.0, width: 0.0);
     }
   }
 
